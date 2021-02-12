@@ -2,18 +2,15 @@ import discord
 from discord.ext import commands
 from discord import utils
 import asyncio
-from config import settings
 import json
 
-settings = {
-    'token': 'ODAyOTQ1OTc4MDQ2ODczNjcy.YA2ntw.0ntrS1rHnvOgd7UO3JxNvIuNgPE',
-    'bot': 'python',
-    'id': 802945978046873672,
-    'prefix': '!'
-}
+
+
+TOKEN = 'ODAyOTQ1OTc4MDQ2ODczNjcy.YA2ntw.zyqyqFCAnXkq6v--ipPg1k94S-w'
+
 
 client = discord.Client()
-bot = commands.Bot(command_prefix = settings['prefix'])
+bot = commands.Bot(command_prefix='!')
 
 
 
@@ -142,35 +139,6 @@ async def on_member_remove(member):
 
 
 @bot.event
-async def on_message (message): 
-
-    with open('C:\\Users\\Nekore\\Desktop\\Python\\lvl.json','r') as f:
-        users = json.load(f)
-    async def update_data(users,user):
-        if not user in users:
-            users[user] = {}
-            users[user]['exp'] = 0
-            users[user]['lvl'] = 1
-    async def add_exp(users,user,exp):
-        users[user]['exp'] += exp
-    async def add_lvl(users,user):
-        exp = users[user]['exp']
-        lvl = users[user]['lvl']
-        if exp > lvl:
-            await message.channel.send(f'{message.author.mention} повысил свой уровень!')
-            users[user]['exp'] = 0
-            users[user]['lvl'] = lvl + 1
-            lvl = lvl + 1
-    await update_data(users,str(message.author.id))
-    await add_exp(users,str(message.author.id),0.1)
-    await add_lvl(users,str(message.author.id))
-    with open('C:\\Users\\Nekore\\Desktop\\Python\\lvl.json','w') as f:
-        json.dump(users,f)
-        await bot.process_commands(message)
-
-        
-
-@bot.event
 async def on_ready():
     print(f"Ready!")
     await bot.change_presence(status=discord.Status.idle,activity=discord.Game('I love BOTS<3'))
@@ -190,10 +158,14 @@ async def команды(ctx):
   emb.add_field(name='Основные',value=f'1- !Привет  \n2- !Повтори текст\n3- !Команды  \n4- !Профиль  ')
   await ctx.send(embed = emb)
 
+@bot.command()
+async def уровень(ctx):
+  emb = discord.Embed(title='Уровень',description=lvl,color=0xff0000)
+  await ctx.send(embed = emb)
 
 
 
 
 
 
-bot.run(settings['token'])
+bot.run(TOKEN)
